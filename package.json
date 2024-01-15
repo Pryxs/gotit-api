@@ -1,0 +1,39 @@
+{
+  "name": "gotit-api",
+  "version": "1.0.0",
+  "description": "restfull api for gotit : school project",
+  "main": "server.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pryxs/gotit-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pryxs/gotit-api/issues"
+  },
+  "homepage": "https://github.com/Pryxs/gotit-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "mongodb": "^6.3.0",
+    "mongoose": "^7.0.0",
+    "mongoose-unique-validator": "^4.0.0",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/mongoose-unique-validator": "^1.0.9",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}
