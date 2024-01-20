@@ -4,66 +4,61 @@ import type { NextFunction, Request, Response } from "express";
 import error from "../../error"
 import UserService from './users.service';
 
-const { createUser, getUser } = UserService
+const { createUser, getUser, getUsers, updateUser, deleteUser } = UserService
 const { BadRequestError } = error
 
-
-export const get = async (req: Request<{ id: string }>, res: Response<IResponse<IUser>>, next: NextFunction) => {
+export const get = async (req: Request<{ id: string }>, res: Response<IResponse<IUser | null>>, next: NextFunction) => {
     try {
         const { id } = req.params;
 
-        if (!id) throw new BadRequestError()
+        const users = await getUser({ _id: id }, '-password');
 
-        const user = await getUser(id);
-
-        res.status(201).json({ data: user })
+        res.status(200).json({ ok: true, data: users })
     } catch (err) {
         next(err)
     }
 }
 
-export const getAll = async (req: Request, res: Response<IResponse<IUser[]>>) => {
+export const getAll = async (req: Request, res: Response<IResponse<IUser[]>>, next: NextFunction) => {
     try {
-        const users = await User.find()
+        const users = await getUsers({}, '-password')
 
-        res.status(200).json({ data: users })
+        res.status(200).json({ ok: true, data: users })
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' })
+        next(err)
     }
 };
 
 export const create = async (req: Request<{}, {}, Omit<IUser, 'id'>>, res: Response<IResponse<IUser>>, next: NextFunction) => {
     try {
         const user = await createUser(req.body);
-        res.status(201).json({ data: user })
+        res.status(201).json({ ok: true, data: user })
     } catch (err) {
         next(err)
     }
 };
 
-export const update = async (req: Request<{ id: string }>, res: Response<IResponse<IUser>>) => {
-    const { id } = req.params;
-
+export const update = async (req: Request<{ id: string }>, res: Response<IResponse<IUser>>, next: NextFunction) => {
     try {
-        const user = await User.findByIdAndUpdate(id, req.body, { new: true })
+        const { id } = req.params;
+        delete req.body.password;
 
-        if (!user) return res.status(404).json({ error: 'User not found' })
+        const user = await updateUser(id, req.body)
 
-        res.status(200).json({ data: user })
+        res.status(200).json({ok: true,  data: user })
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' })
+        next(err)
     }
 };
 
-export const remove = async (req: Request<{ id: string }>, res: Response<IResponse<{ id: string }>>) => {
-    const { id } = req.params;
-
+export const remove = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
     try {
-        await User.deleteOne({ _id: id })
+        const { id } = req.params;
 
-        res.status(200).json({ data: { id } })
+        await deleteUser(id)
+
+        res.status(204).send();
     } catch (err) {
-
-        res.status(500).json({ error: 'Internal server error' })
+        next(err)
     }
 }

@@ -22,13 +22,8 @@ app.use('*', (req: Request, res: Response) => {
 })
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(error.message)
     let code: number = 500;
-    // let message: string = 'Internal Server Error.'
-    if (error instanceof CustomError) {
-        code = error.code
-        // message = error.message;
-    }
+    if (error instanceof CustomError) code = error.code
     res.status(code).json({ ok: false, error: error.message });
 })
 

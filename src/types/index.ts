@@ -1,10 +1,10 @@
 import { AsyncValidationOptions, ValidationError, ValidationOptions } from "joi";
 
 export type IResponse<TData> = {
-    // ok: true;
+    ok: true;
     data: TData
 } | {
-    // ok: false;
+    ok: false;
     error: string;
 }
 

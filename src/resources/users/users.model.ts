@@ -5,7 +5,7 @@ export type IUser = {
     username: string,
     email: string,
     password: string,
-    role: string,
+    role: 'user' | 'editor' | 'admin',
     profile: {
         firstName: string,
         name: string,
@@ -22,7 +22,8 @@ const userSchema = new Schema<IUser>({
     email: {
         type: String,
         validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -31,6 +32,8 @@ const userSchema = new Schema<IUser>({
     },
     role: {
         type: String,
+        enum : ['user', 'editor', 'admin'],
+        default: 'user',
         required: true
     },
     profile: {
