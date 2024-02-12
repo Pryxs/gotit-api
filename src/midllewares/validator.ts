@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import type { ValidationResult } from "../types";
-import { IUser } from "../resources/users/users.model";
 
-type ValidatorMidlleware = {
-    validator: (user: IUser) => ValidationResult<IUser>,
+type ValidatorMidlleware<T> = {
+    validator: (resource: T) => ValidationResult<T>,
     type?: 'body' | 'header'
 }
 
-export const validatorMidlleware = ({ validator, type = 'body' }: ValidatorMidlleware) => {
+export const validatorMidlleware = <T>({ validator, type = 'body' }: ValidatorMidlleware<T>) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const { error } = validator(req[type])
         if (error) {
