@@ -1,4 +1,4 @@
-### Gotit API
+# Gotit API
 
 ## Resources : 
 
@@ -8,7 +8,7 @@
 
 ## Endpoints
     
-# Users
+### Users
 
     - GET | /users => get users 
     - GET | /users/:id => get one user by id 
@@ -17,7 +17,7 @@
     - DELETE | /users => remove user
 
 
-# Lessons
+### Lessons
 
     - GET | /lessons => get lessons 
     - GET | /lessons/:id => get one lesson by id 
@@ -26,16 +26,16 @@
     - DELETE | /lessons => remove lesson
 
 
-# Authentification
+### Authentification
 
    TODO...
 
 
-### Instllation
+## Instllation
 
 ```npm install```
 
-### Script
+## Script
 
 launch project : ```npm start```
 
