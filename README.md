@@ -2,8 +2,8 @@
 
 ## Resources : 
 
-    - :family: users
-    - :books: lessons
+    - 👪 users
+    - 📚 lessons
 
 
 ## Endpoints
