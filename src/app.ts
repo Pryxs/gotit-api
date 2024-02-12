@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { UserRouter } from './resources/users/users.routes'
 import { LessonRouter } from './resources/lessons/lessons.routes'
 import error from "./error"
+import { limiter } from "./midllewares/limiter";
 
 const { CustomError } = error
 
@@ -12,6 +13,9 @@ dotenv.config();
 const app: Express = express();
 
 dbConnect()
+
+app.use(limiter);
+
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());

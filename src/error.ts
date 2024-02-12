@@ -24,9 +24,16 @@ class BadRequestError extends CustomError {
     }
 }
 
+class TooManyRequestsError extends CustomError {
+    constructor() {
+        super('API usage limit exceeded. Please try again later', 429);
+    }
+}
+
 export default {
     UnauthorizedError,
     NotFoundError,
     BadRequestError,
-    CustomError
+    TooManyRequestsError,
+    CustomError,
 };
