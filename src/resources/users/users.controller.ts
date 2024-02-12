@@ -11,9 +11,9 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
     try {
         const { id } = req.params;
 
-        const users = await getUser({ _id: id }, '-password');
+        const user = await getUser({ _id: id }, '-password');
 
-        res.status(200).json({ ok: true, data: users })
+        res.status(200).json({ ok: true, data: user })
     } catch (err) {
         next(err)
     }

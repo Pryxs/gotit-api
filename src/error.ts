@@ -19,8 +19,8 @@ class NotFoundError extends CustomError {
 }
 
 class BadRequestError extends CustomError {
-    constructor() {
-        super('Bad Request', 400);
+    constructor(message?: string) {
+        super(`Bad Request ${message ? ` : ${message}` : ''}`, 400);
     }
 }
 
