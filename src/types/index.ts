@@ -18,3 +18,8 @@ export interface ObjectSchema<TSchema = any> {
     validate(value: any, options?: ValidationOptions): ValidationResult<TSchema>;
     validateAsync(value: any, options?: AsyncValidationOptions): Promise<TSchema>;
 }
+
+export type TokenType = {
+    email: string;
+    role: string;
+}
