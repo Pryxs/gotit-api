@@ -28,7 +28,7 @@
 
 ### Authentification
 
-   TODO...
+    - POST | /auth/login => authenticates the user
 
 
 ## Instllation
