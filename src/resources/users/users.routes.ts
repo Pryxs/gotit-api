@@ -8,7 +8,9 @@ import { authentificator } from "../../midllewares/authentificator";
 
 const router = Router();
 
-router.route('').get(authentificator(['admin']), getAll).post(validator<IUser>({validator: validateUser}),create);
+router.use(authentificator(['admin']))
+
+router.route('').get(getAll).post(validator<IUser>({validator: validateUser}),create);
 router
     .route('/:id')
     .get([mongoIdvalidator()], get)

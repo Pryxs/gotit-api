@@ -17,6 +17,8 @@ export const authentificator = (allowedRole: string[]) => {
 
             const { role } = jwt.verify(token, secretKey) as TokenType;
 
+            console.log(role)
+
             if(!allowedRole.includes(role)) throw new UnauthorizedError();
 
             next();

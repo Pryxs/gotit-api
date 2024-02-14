@@ -1,11 +1,9 @@
 import type { IResponse } from '../../types'
 import { IUser, User } from './users.model'
 import type { NextFunction, Request, Response } from "express";
-import error from "../../error"
 import UserService from './users.service';
 
 const { createUser, getUser, getUsers, updateUser, deleteUser } = UserService
-const { BadRequestError } = error
 
 export const get = async (req: Request<{ id: string }>, res: Response<IResponse<IUser | null>>, next: NextFunction) => {
     try {
