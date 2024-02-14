@@ -16,9 +16,7 @@ const encrypt = (password: string): Promise<string> => {
     });
 };
 
-const decrypt = (password: string, hash: string) => {
-    return bcrypt.compareSync(password, hash)
-}
+const decrypt = (password: string, hash: string) => bcrypt.compareSync(password, hash)
 
 export default {
     encrypt,

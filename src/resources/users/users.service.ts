@@ -3,9 +3,9 @@ import BcryptHelper from '../../utils/bcrypt.helper'
 import error from "../../error"
 
 const { NotFoundError } = error
-const { encrypt, decrypt } = BcryptHelper
+const { encrypt } = BcryptHelper
 
-const getUser = async (filter: { [key: string]: string}, exclusion?: string): Promise<IUser | null> => {
+const getUser = async (filter: { [key: string]: string}, exclusion?: string): Promise<IUser> => {
     const user = await User.findOne(filter, exclusion);
 
     if (!user) throw new NotFoundError();

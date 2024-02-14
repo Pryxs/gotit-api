@@ -3,7 +3,7 @@ import error from "../../error"
 
 const { NotFoundError } = error
 
-const getLesson = async (filter: { [key: string]: string}, exclusion?: string): Promise<ILesson | null> => {
+const getLesson = async (filter: { [key: string]: string}, exclusion?: string): Promise<ILesson> => {
     const lesson = await Lesson.findOne(filter, exclusion);
 
     if (!lesson) throw new NotFoundError();

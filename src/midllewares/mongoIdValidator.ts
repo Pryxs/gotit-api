@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 
 const { BadRequestError } = error
 
-export const mongoIdValidatorMidlleware = () => {
+export const mongoIdvalidator = () => {
     return (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 

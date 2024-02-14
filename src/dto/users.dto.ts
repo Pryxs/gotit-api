@@ -6,7 +6,7 @@ export const validateUser = (user: IUser): ValidationResult<IUser> => {
     const schema: ObjectSchema<IUser> = Joi.object({
         username: Joi.string().required(),
         email: Joi.string().required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(6).required(),
         role: Joi.string().required(),
         profile: Joi.object({
             firstName: Joi.string().required(),

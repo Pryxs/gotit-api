@@ -4,12 +4,12 @@ import error from "../error"
 
 const { BadRequestError } = error
 
-type ValidatorMidlleware<T> = {
+type validator<T> = {
     validator: (resource: T) => ValidationResult<T>,
     type?: 'body' | 'header'
 }
 
-export const validatorMidlleware = <T>({ validator, type = 'body' }: ValidatorMidlleware<T>) => {
+export const validator = <T>({ validator, type = 'body' }: validator<T>) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const { error } = validator(req[type])
 

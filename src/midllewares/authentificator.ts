@@ -5,7 +5,7 @@ import type { TokenType } from '../types';
 
 const { UnauthorizedError } = error
 
-export const authentificator = ({allowedRole} : { allowedRole: string[]}) => {
+export const authentificator = (allowedRole: string[]) => {
     return async(req: Request, res: Response, next: NextFunction) => {
         const secretKey = process.env.SECRET_KEY
         if(!secretKey) throw new Error('Missing secret key')
@@ -13,15 +13,15 @@ export const authentificator = ({allowedRole} : { allowedRole: string[]}) => {
         try {
             const token = req.headers?.authorization;
 
-            if (!token) throw new Error();
+            if (!token) throw new UnauthorizedError();
 
             const { role } = jwt.verify(token, secretKey) as TokenType;
 
-            if(!allowedRole.includes(role)) throw new Error();
+            if(!allowedRole.includes(role)) throw new UnauthorizedError();
 
             next();
         } catch (err) {
-            throw new UnauthorizedError()
+            next(err)
         }
     }
 }

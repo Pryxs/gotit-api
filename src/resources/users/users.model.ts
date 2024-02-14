@@ -13,6 +13,8 @@ export type IUser = {
     }
 }
 
+export type IAuth = Pick<IUser, 'email' | 'password'> 
+
 const userSchema = new Schema<IUser>({
     username: {
         type: String,
