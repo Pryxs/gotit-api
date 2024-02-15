@@ -13,7 +13,7 @@ const getUser = async (filter: { [key: string]: string}, exclusion?: string): Pr
     return user;
 }
 
-const getUsers = async (filter: { [key: string]: string} = {}, exclusion?: string): Promise<IUser[]> => {
+const getUsers = async (filter: Record<string, any> = {}, exclusion?: string): Promise<IUser[]> => {
     const users = await User.find(filter, exclusion);
 
     if (!users.length) throw new NotFoundError();

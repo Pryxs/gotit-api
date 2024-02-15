@@ -2,6 +2,8 @@ import type { IResponse } from '../../types'
 import { ILesson } from './lessons.model'
 import type { NextFunction, Request, Response } from "express";
 import LessonService from './lessons.service';
+import { regexDiacriticSupport } from '../../utils/diacriticSupport';
+import { LessonQueryType } from '../../types';
 
 const { createLesson, getLesson, getLessons, updateLesson, deleteLesson } = LessonService
 
@@ -17,9 +19,21 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
     }
 }
 
-export const getAll = async (req: Request, res: Response<IResponse<ILesson[]>>, next: NextFunction) => {
+export const getAll = async (req: Request<unknown, unknown, unknown, LessonQueryType>, res: Response<IResponse<ILesson[]>>, next: NextFunction) => {
     try {
-        const lessons = await getLessons()
+        const {q, status} = req.query;
+        const query = {
+            title: {
+                $regex: regexDiacriticSupport(q ?? ''),
+            },
+            ...(status === 'public' && {
+                status: {
+                    $not: new RegExp('private')
+                },
+            })
+        }
+
+        const lessons = await getLessons(query)
 
         res.status(200).json({ ok: true, data: lessons })
     } catch (err) {

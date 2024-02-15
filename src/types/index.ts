@@ -23,3 +23,13 @@ export type TokenType = {
     email: string;
     role: string;
 }
+
+export type LessonQueryType = {
+    q?: string;
+    status?: 'pivate' | 'public';
+}
+
+export type UserQueryType = {
+    q?: string;
+    role?: 'user' | 'editor' | 'admin';
+}

@@ -8,7 +8,7 @@ import { authentificator } from "../../midllewares/authentificator";
 
 const router = Router();
 
-// TODO : restrict private for users only
+// TODO : restrict private for users
 router
     .route('')
     .get(getAll)

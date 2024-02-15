@@ -1,7 +1,9 @@
 import type { IResponse } from '../../types'
-import { IUser, User } from './users.model'
+import { IUser } from './users.model'
 import type { NextFunction, Request, Response } from "express";
 import UserService from './users.service';
+import { regexDiacriticSupport } from '../../utils/diacriticSupport';
+import { UserQueryType } from '../../types';
 
 const { createUser, getUser, getUsers, updateUser, deleteUser } = UserService
 
@@ -17,9 +19,21 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
     }
 }
 
-export const getAll = async (req: Request, res: Response<IResponse<IUser[]>>, next: NextFunction) => {
+export const getAll = async (req: Request<unknown, unknown, unknown, UserQueryType>, res: Response<IResponse<IUser[]>>, next: NextFunction) => {
     try {
-        const users = await getUsers({}, '-password')
+        const {q, role} = req.query;
+        const query = {
+            $or: [
+                { username: { $regex: regexDiacriticSupport(q ?? '') } },
+                { 'profile.firstName': { $regex: regexDiacriticSupport(q ?? '') } },
+                { 'profile.name': { $regex: regexDiacriticSupport(q ?? '') } }
+            ],
+            ...(role && {
+                role: role,
+            })
+        }
+
+        const users = await getUsers(query, '-password')
 
         res.status(200).json({ ok: true, data: users })
     } catch (err) {
