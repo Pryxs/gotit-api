@@ -21,7 +21,7 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
 
 export const getAll = async (req: Request<unknown, unknown, unknown, LessonQueryType>, res: Response<IResponse<IModule[]>>, next: NextFunction) => {
     try {
-        const {q, status} = req.query;
+        const {q, status, author} = req.query;
         const query = {
             title: {
                 $regex: regexDiacriticSupport(q ?? ''),
@@ -30,6 +30,9 @@ export const getAll = async (req: Request<unknown, unknown, unknown, LessonQuery
                 status: {
                     $not: new RegExp('private')
                 },
+            }),
+            ...(author && {
+                author,
             })
         }
 

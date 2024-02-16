@@ -24,7 +24,8 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
 
 export const getAll = async (req: Request<unknown, unknown, unknown, LessonQueryType>, res: Response<IResponse<ILesson[]>>, next: NextFunction) => {
     try {
-        const {q, status} = req.query;
+        const {q, status, author, categories} = req.query;
+        const categoriesArr = categories ? categories.split(',') : []
         const query = {
             title: {
                 $regex: regexDiacriticSupport(q ?? ''),
@@ -33,6 +34,12 @@ export const getAll = async (req: Request<unknown, unknown, unknown, LessonQuery
                 status: {
                     $not: new RegExp('private')
                 },
+            }),
+            ...(author && {
+                author,
+            }),
+            ...(categories && categories.length && {
+                categories : { $in : categoriesArr}
             })
         }
 

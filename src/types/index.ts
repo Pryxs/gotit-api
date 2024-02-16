@@ -27,6 +27,8 @@ export type TokenType = {
 
 export type LessonQueryType = {
     q?: string;
+    author?: string;
+    categories?: string;
     status?: 'pivate' | 'public';
 }
 

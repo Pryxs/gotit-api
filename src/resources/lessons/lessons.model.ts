@@ -1,11 +1,12 @@
 import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import type { ObjectId } from 'mongodb';
+import type { ObjectId } from 'mongoose';
 
 export type ILesson = {
     title: string,
     author: ObjectId,
     content: string,
+    categories: ObjectId[],
     status: 'public' | 'private',
 }
 
@@ -24,6 +25,10 @@ const lessonSchema = new Schema<ILesson>({
     content: {
         type: String,
         required: true
+    },
+    categories: {
+        type: [Schema.Types.ObjectId],
+        ref: 'categories',
     },
     status: {
         type: String,
