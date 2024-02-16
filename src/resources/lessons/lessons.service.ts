@@ -1,6 +1,7 @@
 import { ILesson, Lesson } from './lessons.model'
 import error from "../../error"
 import { TokenType } from '../../types';
+import { mustBeOwner } from '../../utils/query.helper'
 
 const { NotFoundError } = error
 
@@ -27,9 +28,7 @@ const createLesson = async (data: Omit<ILesson, 'id'>, user: TokenType): Promise
 const updateLesson = async (id: string, data: Omit<ILesson, 'id'>, user: TokenType): Promise<ILesson> => {
     const lesson = await Lesson.findOneAndUpdate({
         _id: id,
-        ...(user.role === 'editor' && {
-            author: user.id
-        })
+        ...mustBeOwner(user)
     }, data, { new: true })
 
     if (!lesson) throw new NotFoundError();
@@ -37,7 +36,7 @@ const updateLesson = async (id: string, data: Omit<ILesson, 'id'>, user: TokenTy
     return lesson;
 }
 
-const deleteLesson = async (id: string) => await Lesson.deleteOne({ _id: id })
+const deleteLesson = async (id: string, user: TokenType) => await Lesson.deleteOne({ _id: id, ...mustBeOwner(user)})
 
 export default {
     getLesson,

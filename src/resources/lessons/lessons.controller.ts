@@ -4,6 +4,9 @@ import type { NextFunction, Request, Response } from "express";
 import LessonService from './lessons.service';
 import { regexDiacriticSupport } from '../../utils/diacriticSupport';
 import { LessonQueryType } from '../../types';
+import error from '../../error';
+
+const { CustomError } = error;
 
 const { createLesson, getLesson, getLessons, updateLesson, deleteLesson } = LessonService
 
@@ -66,7 +69,9 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
     try {
         const { id } = req.params;
 
-        await deleteLesson(id)
+        const response = await deleteLesson(id,  res.locals.user)
+
+        if(!response.deletedCount) throw new CustomError('Your are not the resource owner', 400)
 
         res.status(204).send();
     } catch (err) {
