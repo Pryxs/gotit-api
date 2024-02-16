@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { get, getAll, create, update, remove } from './modules.controller'
+import { get, getAll, create, update, remove } from './categories.controller'
 import { validator } from "../../midllewares/validator";
 import { mongoIdvalidator } from "../../midllewares/mongoIdValidator";
-import { validateModule } from "../../dto/modules.dto"
-import { IModule } from "./modules.model";
+import { validateCategory } from "../../dto/categories.dto"
+import { ICategory } from "./categories.model";
 import { authentificator } from "../../midllewares/authentificator";
 
 const router = Router();
@@ -12,20 +12,20 @@ router
     .route('')
     .get(getAll)
     .post([
-        authentificator(['editor']),
-        validator<IModule>({validator: validateModule})
+        authentificator(['admin']),
+        validator<ICategory>({validator: validateCategory})
     ] ,create);
 router
     .route('/:id')
     .get([mongoIdvalidator()], get)
     .patch([
-        authentificator(['editor', 'admin']),
+        authentificator(['admin']),
         mongoIdvalidator()
     ], update)
     .delete([
-        authentificator(['editor', 'admin']), 
+        authentificator(['admin']), 
         mongoIdvalidator()
     ], remove);
 
-export const ModuleRouter = router;
+export const CategoryRouter = router;
 

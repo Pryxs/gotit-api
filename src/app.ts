@@ -4,9 +4,10 @@ import dotenv from "dotenv";
 import { UserRouter } from './resources/users/users.routes'
 import { LessonRouter } from './resources/lessons/lessons.routes'
 import { ModuleRouter } from './resources/modules/modules.routes'
+import { AuthRouter } from "./resources/authentification/auth.routes";
+import { CategoryRouter } from "./resources/categories/categories.routes";
 import error from "./error"
 import { limiter } from "./midllewares/limiter";
-import { AuthRouter } from "./resources/authentification/auth.routes";
 
 const { CustomError } = error
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use('/api/v1/users', UserRouter)
 app.use('/api/v1/lessons', LessonRouter)
 app.use('/api/v1/modules', ModuleRouter)
+app.use('/api/v1/categories', CategoryRouter)
 app.use('/api/v1/auth', AuthRouter)
 
 app.use('*', (req: Request, res: Response) => {
