@@ -4,6 +4,9 @@
 
     - 👪 users
     - 📚 lessons
+    - 📁 modules
+    - 🔎 categories
+
 
 
 ## Endpoints
@@ -24,6 +27,22 @@
     - POST | /lessons => create lesson
     - PATCH | /lessons => update (partial) lesson
     - DELETE | /lessons => remove lesson
+
+
+### Modules
+    - GET | /modules => get modules 
+    - GET | /modules/:id => get one module by id 
+    - POST | /modules => create module
+    - PATCH | /modules => update (partial) module
+    - DELETE | /modules => remove module
+
+
+### Categories
+    - GET | /categories => get categories 
+    - GET | /categories/:id => get one category by id 
+    - POST | /categories => create category
+    - PATCH | /categories => update (partial) category
+    - DELETE | /categories => remove category
 
 
 ### Authentification
