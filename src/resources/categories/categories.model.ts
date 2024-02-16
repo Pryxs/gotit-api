@@ -17,4 +17,4 @@ const moduleSchema = new Schema<ICategory>({
 
 moduleSchema.plugin(uniqueValidator, { type: 'mongoose-unique-validator' });
 
-export const Category = model<ICategory>('category', moduleSchema)
+export const Category = model<ICategory>('categories', moduleSchema)

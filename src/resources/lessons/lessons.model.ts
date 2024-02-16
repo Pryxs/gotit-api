@@ -42,4 +42,4 @@ const lessonSchema = new Schema<ILesson>({
 
 lessonSchema.plugin(uniqueValidator, { type: 'mongoose-unique-validator' });
 
-export const Lesson = model<ILesson>('lesson', lessonSchema)
+export const Lesson = model<ILesson>('lessons', lessonSchema)

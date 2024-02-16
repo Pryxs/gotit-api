@@ -52,4 +52,4 @@ const userSchema = new Schema<IUser>({
 
 userSchema.plugin(uniqueValidator, { type: 'mongoose-unique-validator' });
 
-export const User = model<IUser>('user', userSchema)
+export const User = model<IUser>('users', userSchema)

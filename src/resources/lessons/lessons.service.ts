@@ -2,11 +2,19 @@ import { ILesson, Lesson } from './lessons.model'
 import error from "../../error"
 import { TokenType } from '../../types';
 import { mustBeOwner } from '../../utils/query.helper'
+import { IUser } from '../users/users.model';
+import { ICategory } from '../categories/categories.model';
 
 const { NotFoundError } = error
 
+type PopulatedLessonByAuthor = ILesson & { author: IUser}
+type PopulatedLessonByCategory = ILesson & { categories: ICategory[]}
+
 const getLesson = async (filter: Record<string, string>, exclusion?: string): Promise<ILesson> => {
-    const lesson = await Lesson.findOne(filter, exclusion);
+    const lesson = await Lesson.findOne(filter, exclusion)
+        .populate<Pick<PopulatedLessonByAuthor, 'author'>>({path: 'author', select: '-password'})
+        .populate<Pick<PopulatedLessonByCategory, 'categories'>>('categories')
+        .exec();
 
     if (!lesson) throw new NotFoundError();
 
@@ -14,7 +22,10 @@ const getLesson = async (filter: Record<string, string>, exclusion?: string): Pr
 }
 
 const getLessons = async (filter: Record<string, any> = {}, exclusion?: string): Promise<ILesson[]> => {
-    const lessons = await Lesson.find(filter, exclusion);
+    const lessons = await Lesson.find(filter, exclusion)
+    .populate<Pick<PopulatedLessonByAuthor, 'author'>>({path: 'author', select: '-password'})
+    .populate<Pick<PopulatedLessonByCategory, 'categories'>>('categories')
+        .exec();
 
     if (!lessons.length) throw new NotFoundError();
 

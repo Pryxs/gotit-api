@@ -21,7 +21,8 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
 
 export const getAll = async (req: Request<unknown, unknown, unknown, LessonQueryType>, res: Response<IResponse<IModule[]>>, next: NextFunction) => {
     try {
-        const {q, status, author} = req.query;
+        const {q, status, author, categories} = req.query;
+        const categoriesArr = categories ? categories.split(',') : []
         const query = {
             title: {
                 $regex: regexDiacriticSupport(q ?? ''),
@@ -33,6 +34,9 @@ export const getAll = async (req: Request<unknown, unknown, unknown, LessonQuery
             }),
             ...(author && {
                 author,
+            }),
+            ...(categories && categories.length && {
+                categories : { $in : categoriesArr}
             })
         }
 
@@ -46,7 +50,7 @@ export const getAll = async (req: Request<unknown, unknown, unknown, LessonQuery
 
 export const create = async (req: Request<{}, {}, Omit<IModule, 'id'>>, res: Response<IResponse<IModule>>, next: NextFunction) => {
     try {
-        const module = await createModule(req.body);
+        const module = await createModule(req.body, res.locals.user);
         res.status(201).json({ ok: true, data: module })
     } catch (err) {
         next(err)

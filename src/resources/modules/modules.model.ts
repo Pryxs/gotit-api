@@ -47,4 +47,4 @@ const moduleSchema = new Schema<IModule>({
 
 moduleSchema.plugin(uniqueValidator, { type: 'mongoose-unique-validator' });
 
-export const Module = model<IModule>('module', moduleSchema)
+export const Module = model<IModule>('modules', moduleSchema)
