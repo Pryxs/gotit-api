@@ -22,6 +22,7 @@ export interface ObjectSchema<TSchema = any> {
 export type TokenType = {
     email: string;
     role: string;
+    id: string;
 }
 
 export type LessonQueryType = {

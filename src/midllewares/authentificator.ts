@@ -15,9 +15,15 @@ export const authentificator = (allowedRole: string[]) => {
 
             if (!token) throw new UnauthorizedError();
 
-            const { role } = jwt.verify(token, secretKey) as TokenType;
+            const { role, email, id } = jwt.verify(token, secretKey) as TokenType;
 
             if(!allowedRole.includes(role)) throw new UnauthorizedError();
+
+            res.locals.user = {
+                role,
+                email,
+                id,
+            };  
 
             next();
         } catch (err) {

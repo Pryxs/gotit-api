@@ -1,5 +1,6 @@
 import { ILesson, Lesson } from './lessons.model'
 import error from "../../error"
+import { TokenType } from '../../types';
 
 const { NotFoundError } = error
 
@@ -19,10 +20,17 @@ const getLessons = async (filter: Record<string, any> = {}, exclusion?: string):
     return lessons;
 }
 
-const createLesson = async (data: Omit<ILesson, 'id'>): Promise<ILesson> => await new Lesson(data).save();
+const createLesson = async (data: Omit<ILesson, 'id'>, user: TokenType): Promise<ILesson> => {
+    return await new Lesson({...data, author: user.id}).save();
+}
 
-const updateLesson = async (id: string, data: Omit<ILesson, 'id'>): Promise<ILesson> => {
-    const lesson = await Lesson.findByIdAndUpdate(id, data, { new: true })
+const updateLesson = async (id: string, data: Omit<ILesson, 'id'>, user: TokenType): Promise<ILesson> => {
+    const lesson = await Lesson.findOneAndUpdate({
+        _id: id,
+        ...(user.role === 'editor' && {
+            author: user.id
+        })
+    }, data, { new: true })
 
     if (!lesson) throw new NotFoundError();
 

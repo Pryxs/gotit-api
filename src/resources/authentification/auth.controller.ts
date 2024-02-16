@@ -4,6 +4,8 @@ import BcryptHelper from '../../utils/bcrypt.helper';
 import jwt from 'jsonwebtoken';
 import UserService from '../users/users.service';
 import error from "../../error"
+import { ObjectId } from 'mongoose';
+import { IUser } from '../users/users.model';
 
 const { UnauthorizedError } = error
 const { decrypt } = BcryptHelper
@@ -16,12 +18,12 @@ export const login = async (req: Request<{ id: string }>, res: Response<IRespons
     try {
         const { email, password } = req.body
 
-        const user = await getUser({email})
+        const user = await getUser({email}) as IUser & { _id: ObjectId}
 
         const isCheck = decrypt(password, user.password)
         if (!isCheck) throw new UnauthorizedError();
 
-        const token = jwt.sign({ email, role: user.role }, secretKey);
+        const token = jwt.sign({ email, role: user.role, id: user._id }, secretKey);
 
         res.send({ ok: true, data: { token } });
     } catch (err) {

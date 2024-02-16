@@ -43,7 +43,7 @@ export const getAll = async (req: Request<unknown, unknown, unknown, LessonQuery
 
 export const create = async (req: Request<{}, {}, Omit<ILesson, 'id'>>, res: Response<IResponse<ILesson>>, next: NextFunction) => {
     try {
-        const lesson = await createLesson(req.body);
+        const lesson = await createLesson(req.body, res.locals.user);
         res.status(201).json({ ok: true, data: lesson })
     } catch (err) {
         next(err)
@@ -54,7 +54,7 @@ export const update = async (req: Request<{ id: string }>, res: Response<IRespon
     try {
         const { id } = req.params;
 
-        const lesson = await updateLesson(id, req.body)
+        const lesson = await updateLesson(id, req.body, res.locals.user)
 
         res.status(200).json({ok: true,  data: lesson })
     } catch (err) {
