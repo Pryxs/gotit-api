@@ -8,6 +8,7 @@ import { AuthRouter } from "./resources/authentification/auth.routes";
 import { CategoryRouter } from "./resources/categories/categories.routes";
 import error from "./error"
 import { limiter } from "./midllewares/limiter";
+import cors from "cors";
 
 const { CustomError } = error
 
@@ -17,6 +18,7 @@ const app: Express = express();
 
 dbConnect()
 
+app.use(cors());
 app.use(limiter);
 
 
