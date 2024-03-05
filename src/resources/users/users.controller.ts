@@ -21,7 +21,7 @@ export const get = async (req: Request<{ id: string }>, res: Response<IResponse<
 
 export const getAll = async (req: Request<unknown, unknown, unknown, UserQueryType>, res: Response<IResponse<IUser[]>>, next: NextFunction) => {
     try {
-        const {q, role} = req.query;
+        const { q, role } = req.query;
         const query = {
             $or: [
                 { username: { $regex: regexDiacriticSupport(q ?? '') } },
@@ -57,7 +57,7 @@ export const update = async (req: Request<{ id: string }>, res: Response<IRespon
 
         const user = await updateUser(id, req.body)
 
-        res.status(200).json({ok: true,  data: user })
+        res.status(200).json({ ok: true, data: user })
     } catch (err) {
         next(err)
     }
@@ -67,7 +67,8 @@ export const remove = async (req: Request<{ id: string }>, res: Response, next: 
     try {
         const { id } = req.params;
 
-        await deleteUser(id)
+        const t = await deleteUser(id)
+        console.log(id)
 
         res.status(204).send();
     } catch (err) {
